@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <change-excel />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import ChangeExcel from '@/components/change-excel';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ChangeExcel
   }
 }
 </script>
