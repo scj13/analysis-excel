@@ -44,7 +44,7 @@ export default {
           console.log(ws);
           const excelData = this.formatData(ws);
           console.log('excelData', excelData);
-          exportXlsx(excelData, '转化后的excel');
+          exportXlsx(excelData, `${excelData[0][1]}-转换后`);
           this.$refs.upload.value = '';
         } catch (e) {
           console.log(e);
@@ -55,17 +55,25 @@ export default {
     },
     formatData(ws) {
       console.log('111');
-      const data = [];
+      const sTitle = Object.keys(ws[2])[1];
+      const sData = [
+          ['标题', sTitle],
+          ['描述', ws[0][sTitle]],
+          ['用时', ws[1][sTitle]],
+      ]
+      const oData = [];
       for(let i= 0;i<ws.length;i++){
         if (i >= 3) {
           const row = ws[i];
-          let title = row["标题"].replace(/([ABCDE])[:：.]/g, '$1、');
-          const options = title.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
+          // 表格标题
+          // 选项标题
+          let oTitle = row["标题"].replace(/([ABCDE])[:：.]/g, '$1、');
+          const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
           // console.log(options, i);
-          title = title.slice(0, title.indexOf('A、'));
+          oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
           const sheetData = {
-            '题干': title,
-            '题型': row['2021年度考试（综合单选）'],
+            '题干': oTitle,
+            '题型': row[sTitle],
           }
           for(let oi = 0; oi < 5; oi ++) {
             sheetData[`选项${oi + 1}`] = options[oi] || '';
@@ -73,10 +81,10 @@ export default {
           sheetData['解析'] = row['__EMPTY_5'];
           sheetData['答案'] = row['__EMPTY_6'];
           sheetData['得分'] = row['__EMPTY_7'];
-          data.push(sheetData);
+          oData.push(sheetData);
         }
       }
-      return [Object.keys(data[0])].concat(data.map(v => Object.values(v)));
+      return sData.concat([Object.keys(oData[0])]).concat(oData.map(v => Object.values(v)));
     },
   }
 }
