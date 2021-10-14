@@ -1,5 +1,5 @@
 # json文件转csv
-### 一、安装node.js（只操作一次）
+### 一、安装运行环境-node.js（只操作一次）
 下载地址：http://nodejs.cn/download/。
 
 选windows msi文件 ×64。 没啥注意的，一直next。
@@ -10,8 +10,10 @@
 
 2. 输入`node -v`和`npm -v`。有提示版本号代表安装成功
 
+### 二、下载程序
+![4](./src/assets/4.png)
 
-### 二、运行程序
+### 三、运行程序
 1. 进入analysis-excel目录，在上方地址栏输入`cmd`，回车。
 ![1](./src/assets/1.png)
 
