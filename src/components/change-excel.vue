@@ -67,7 +67,7 @@ export default {
           const row = ws[i];
           // 表格标题
           // 选项标题
-          let oTitle = row["标题"].replace(/([ABCDE])[:：.]/g, '$1、');
+          let oTitle = row["标题"].replace(/([ABCDE])[:：.、]+/g, '$1、');
           const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
           // console.log(options, i);
           oTitle = oTitle.slice(0, oTitle.indexOf('A、'));

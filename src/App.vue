@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <change-excel />
+    <!--<change-excel />-->
+    <json-to-csv />
   </div>
 </template>
 
 <script>
 
-import ChangeExcel from '@/components/change-excel';
+// import ChangeExcel from '@/components/change-excel';
+import JsonToCsv from '@/components/json-to-csv';
 export default {
   name: 'App',
   components: {
-    ChangeExcel
+    JsonToCsv,
+    // ChangeExcel
   }
 }
 </script>

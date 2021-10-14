@@ -37,3 +37,45 @@ function sheetToblob(sheet, sheetName, XLSX) {
   }
   return new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
 }
+
+// 导出csv
+export const exportCsv = (data, filename) => {
+  let str = '';
+  console.time('forEach');
+  data.forEach((arr) => {
+    str += `${arr.reduce((acc, cur, i) => {
+      const ret = `${acc}${i !== 0 ? ',' : ''}`;
+      let val = cur;
+      if (!isNaN(Number(cur))) {
+        // 大整数在csv里面会失真，所以加个空格
+        if (!Number.isSafeInteger(Number(cur))) {
+          val = `"${cur}"\t`;
+        }
+      } else {
+        // csv会根据分隔符（半角逗号、半角分号、空格、tab等）去分隔单元格，所以用双引号包起来
+        if (typeof cur === 'string' && /[,;\r\n]/.test(cur)) {
+          val = cur.replace(/,/g, '，').replace(/;/g, '；')
+            .replace(/[\r\n]/g, ' ');
+        }
+      }
+      return `${ret}${val}`;
+    }, '')}\r\n`;
+  });
+  console.timeEnd('forEach');
+  str = getDownloadUrl(str);
+  const link = document.createElement('a');
+  link.setAttribute('href', str);
+  link.setAttribute('download', `${filename}.csv`);
+  link.click();
+};
+
+function getDownloadUrl(str) {
+  const utf = '\uFEFF'; // 为了使Excel以utf-8的编码模式，同时也是解决中文乱码的问题
+  if (window.Blob && window.URL && window.URL.createObjectURL) {
+    const csvData = new Blob([utf + str], {
+      type: 'text/csv',
+    });
+    return URL.createObjectURL(csvData);
+  }
+  return `data:text/csv;charset=utf-8,${utf}${encodeURIComponent(str)}`;
+}
