@@ -54,8 +54,6 @@ export default {
             this.$refs.upload.value = '';
           }
           // const wsname = workbook.SheetNames[0];//取第一张表
-          // // eslint-disable-next-line no-debugger
-          // debugger;
           // const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]);//生成json表格内容
           // console.log(ws);
           // const excelData = this.formatData(ws);
@@ -85,9 +83,10 @@ export default {
           // 表格标题
           // 选项标题
           let oTitle = row["题目内容"].replace(/([ABCDE])[:：.、]+/g, '$1、');
-          const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
-          // console.log(options, i);
-          oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
+          // const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
+          // oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
+          const options = oTitle.split(/[ABCDE]、/).map(v => v.trim());
+          oTitle = options.shift();
           const sheetData = {
             '题干': oTitle,
             '题型': '顺序选择题',
@@ -131,9 +130,10 @@ export default {
           // 表格标题
           // 选项标题
           let oTitle = row["题目内容"].replace(/([ABCDE])[:：.、]+/g, '$1、');
-          const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
-          // console.log(options, i);
-          oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
+          // const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
+          // oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
+          const options = oTitle.split(/[ABCDE]、/).map(v => v.trim());
+          oTitle = options.shift();
           const sheetData = {
             '题干': oTitle,
             '题型': '顺序选择题',
