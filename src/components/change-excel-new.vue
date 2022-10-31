@@ -50,7 +50,7 @@ export default {
             console.log(ws);
             const excelData = this.formatData1(ws, wsname);
             console.log('excelData', excelData);
-            exportXlsx(excelData, `${excelData[0][1]}-转换后`);
+            exportXlsx(excelData, `${excelData[0][1]}-磨题帮`);
             this.$refs.upload.value = '';
           }
           // const wsname = workbook.SheetNames[0];//取第一张表
@@ -82,10 +82,10 @@ export default {
           const row = ws[i];
           // 表格标题
           // 选项标题
-          let oTitle = row["题目内容"].replace(/([ABCDE])[:：.、]+/g, '$1、');
+          let oTitle = row["题目内容"].replace(/([ABCDEF])[:：.、]+/g, '$1、');
           // const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
           // oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
-          const options = oTitle.split(/[ABCDE]、/).map(v => v.trim());
+          const options = oTitle.split(/[ABCDEF]、/).map(v => v.trim());
           oTitle = options.shift();
           const sheetData = {
             '题干': oTitle,
@@ -97,9 +97,10 @@ export default {
             sheetData['选项3'] = '';
             sheetData['选项4'] = '';
             sheetData['选项5'] = '';
+            sheetData['选项6'] = '';
           } else {
-            for(let oi = 0; oi < 5; oi ++) {
-              sheetData[`选项${oi + 1}`] = options[oi]?.replace(/[ABCDE]、(.*)/g, '$1') || '';
+            for(let oi = 0; oi < 6; oi ++) {
+              sheetData[`选项${oi + 1}`] = options[oi]?.replace(/[ABCDEF]、(.*)/g, '$1') || '';
             }
           }
           sheetData['解析'] = '';
@@ -129,10 +130,10 @@ export default {
           const row = ws[i];
           // 表格标题
           // 选项标题
-          let oTitle = row["题目内容"].replace(/([ABCDE])[:：.、]+/g, '$1、');
+          let oTitle = row["题目内容"].replace(/([ABCDEF])[:：.、]+/g, '$1、');
           // const options = oTitle.match(/[ABCDE]、[^(?!A、)(?!B、)(?!C、)(?!D、)(?!E、)]+/g);
           // oTitle = oTitle.slice(0, oTitle.indexOf('A、'));
-          const options = oTitle.split(/[ABCDE]、/).map(v => v.trim());
+          const options = oTitle.split(/[ABCDEF]、/).map(v => v.trim());
           oTitle = options.shift();
           const sheetData = {
             '题干': oTitle,
@@ -145,11 +146,16 @@ export default {
             sheetData['选项4'] = '';
             sheetData['选项5'] = '';
           } else {
-            for(let oi = 0; oi < 5; oi ++) {
-              sheetData[`选项${oi + 1}`] = options[oi]?.replace(/[ABCDE]、(.*)/g, '$1') || '';
+            for(let oi = 0; oi < 6; oi ++) {
+              sheetData[`选项${oi + 1}`] = options[oi]?.replace(/[ABCDEF]、(.*)/g, '$1') || '';
+              if(/[aAbBcCdDeEfF]/.test(sheetData[`选项${oi + 1}`])) {
+                console.log(i+2, sheetData[`选项${oi + 1}`]);
+                // eslint-disable-next-line no-debugger
+                // debugger;
+              }
             }
           }
-          sheetData['解析'] = row['备注'];
+          sheetData['解析'] = `[${row['业务类型']}] [${row['难度']}] ${row['备注']}`;
           if (wsname === '判断') {
             sheetData['答案'] = row['答案'] === '正确' ? 'A' : 'B';
           } else {
