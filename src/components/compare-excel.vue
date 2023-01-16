@@ -57,11 +57,15 @@ export default {
     },
     formatData(ws) {
       const arr = ws.split('\n');
-      const arr1 = arr.map(v => v.split(',')[0]);
-      const arr2 = arr.map(v => v.split(',')[1]);
+      const arr1 = arr.map(v => v.split(',')[0]?.trim());
+      const arr2 = arr.map(v => v.split(',')[1]?.trim());
       console.log(arr1, arr2);
       const arr3 = arr1.filter(v => v && !arr2.includes(v));
       const arr4 = arr2.filter(v => v && !arr1.includes(v));
+      const tip1 = arr3.length ? '第一列不在第二列中的值' : '第一列的值都在第二列中';
+      const tip2 = arr4.length ? '第二列不在第一列中的值' : '第二列的值都在第一列中';
+      arr3.unshift(tip1);
+      arr4.unshift(tip2);
       return arr1.map((v, i) => [v, arr2[i], arr3[i], arr4[i]]);
     },
   }
